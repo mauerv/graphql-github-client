@@ -16,8 +16,9 @@ export default ({
 			onClick={() => 
 				onStarRepository(repository.id, repository.viewerHasStarred)
 			}
-		>
-			{repository.viewerHasStarred ? 'Unstar' : 'Star'}
+		>	
+			{repository.stargazers.totalCount} 
+			{repository.viewerHasStarred ? ' Unstar' : ' Star'}
 		</button>
 		<ul>
 			{repository.issues.edges.map(issue => (

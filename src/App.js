@@ -4,7 +4,9 @@ import {
   getIssuesOfRepository,
   resolveIssuesQuery,
   addStarToRepository,
-  resolveAddStarMutation
+  resolveAddStarMutation,
+  removeStarFromRepository,
+  resolveRemoveStarMutation
 } from './graphQL/fetchLogic'
 
 import Organization from './components/Organization'
@@ -38,10 +40,18 @@ class App extends Component {
     this.onFetchFromGitHub(this.state.path, endCursor)
   }
 
-  onStarRepository = (repositoryId, viewerHasStarred) => {
-    addStarToRepository(repositoryId).then(mutationResult =>
-      this.setState(resolveAddStarMutation(mutationResult))
-    )
+  onStarRepository = repositoryId => {
+    const { viewerHasStarred } = this.state.organization.repository
+    
+    if (viewerHasStarred) {
+      removeStarFromRepository(repositoryId).then(mutationResult =>
+        this.setState(resolveRemoveStarMutation(mutationResult))
+      )
+    } else {
+      addStarToRepository(repositoryId).then(mutationResult =>
+        this.setState(resolveAddStarMutation(mutationResult))
+      )
+    }
   }
 
   render() {

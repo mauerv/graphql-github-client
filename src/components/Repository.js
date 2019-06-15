@@ -2,7 +2,7 @@ import React from 'react'
 
 export default ({ 
 	repository, 
-	onFetchMoreIssues
+	onFetchMoreIssues,
 	onStarRepository
 }) => (
 	<div>

@@ -1,5 +1,8 @@
 import axios from 'axios'
-import { GET_ISSUES_OF_REPOSITORY } from './queries'
+import { 
+	GET_ISSUES_OF_REPOSITORY,
+	ADD_STAR
+} from './queries'
 
 export const axiosGitHubGraphQL = axios.create({
   baseURL: `https://api.github.com/graphql`,
@@ -15,13 +18,6 @@ export const getIssuesOfRepository = (path, cursor ) => {
     query: GET_ISSUES_OF_REPOSITORY,
     variables: { organization, repository, cursor }
   })
-}
-
-export const addStarToRepository = repositoryId => {
-	return axiosGitHubGraphQL.post('', {
-		query: ADD_STAR,
-		variables: { repositoryId }
-	})
 }
 
 export const resolveIssuesQuery = (queryResult, cursor) => state => {
@@ -50,5 +46,29 @@ export const resolveIssuesQuery = (queryResult, cursor) => state => {
 			}
 		},
 		errors
+	}
+}
+
+export const addStarToRepository = repositoryId => {
+	return axiosGitHubGraphQL.post('', {
+		query: ADD_STAR,
+		variables: { repositoryId }
+	})
+}
+
+export const resolveAddStarMutation = mutationResult => state => {
+	const {
+		viewerHasStarred
+	} = mutationResult.data.data.addStar.starrable
+
+	return {
+		...state,
+		organization: {
+			...state.organization,
+			repository: {
+				...state.organization.repository,
+				viewerHasStarred
+			}
+		}
 	}
 }

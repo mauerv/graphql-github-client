@@ -38,3 +38,13 @@ export const GET_ISSUES_OF_REPOSITORY = `
     }
   } 
 `
+
+export const ADD_STAR = `
+  mutation ($repositoryId: ID!) {
+    addStar(input:{ starrableId: $repositoryId }) {
+      starrable {
+        viewerHasStarred
+      }
+    }
+  }
+`

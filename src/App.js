@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 import { 
   getIssuesOfRepository,
-  resolveIssuesQuery
+  resolveIssuesQuery,
+  addStarToRepository,
+  resolveAddStarMutation
 } from './graphQL/fetchLogic'
 
 import Organization from './components/Organization'
@@ -37,7 +39,9 @@ class App extends Component {
   }
 
   onStarRepository = (repositoryId, viewerHasStarred) => {
-
+    addStarToRepository(repositoryId).then(mutationResult =>
+      this.setState(resolveAddStarMutation(mutationResult))
+    )
   }
 
   render() {
@@ -64,7 +68,7 @@ class App extends Component {
 
         {organization ? (
           <Organization 
-            organization={organization} errors={errors} 
+            organization={organization} 
             errors={errors}
             onFetchMoreIssues={this.onFetchMoreIssues}
             onStarRepository={this.onStarRepository}
